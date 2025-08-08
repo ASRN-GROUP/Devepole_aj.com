@@ -1,0 +1,300 @@
+<!--
+  ASRN - Advanced Modular Portfolio (single-file)
+  ------------------------------------------------
+  PURPOSE: A professional, modular, LinkedIn-friendly officeal site for ASRN.
+  - Includes animated SVG background, modular card layout, accessibility hints.
+  - Use for portfolio/demo only. Do NOT present as an official ASRN site.
+
+  BEFORE PUBLISHING:
+  1) Replace placeholder images and contact details with your own or company-approved assets.
+  2) Keep the visible disclaimer: "Demo / Portfolio — Not an official ASRN site." on public posts.
+
+  QUICK DEPLOY (GitHub Pages / Netlify):
+    git init
+    git add .
+    git commit -m "ASRN advanced demo"
+    git branch -M main
+    git remote add origin https://github.com/yourusername/asrn-advanced-demo.git
+    git push -u origin main
+
+  NETLIFY (drag & drop): compress the folder or upload index.html to Sites > New site > deploy
+  VERCEL (from Git): Import GitHub repo and deploy
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASRN — Safety Knowledge Hub </title>
+  <meta name="description" content="ASRN : modular safety hub, AutoCAD zone, training modules — portfolio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- Root & Resets ---------- */
+    :root{
+      --accent:#0b6b5b; /* ASRN accent */
+      --accent-2:#0ea58a;
+      --bg:#232c3b; /* dark background behind animation */
+      --card:#ffffff;
+      --muted:#6b7280;
+      --glass: rgba(255,255,255,0.06);
+      --max:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; color: #0b1820}
+    a{color:inherit}
+
+    /* ---------- Layout ---------- */
+    .page{min-height:100vh; background:var(--bg); position:relative; overflow-x:hidden}
+    .site-wrap{max-width:var(--max); margin:0 auto; padding:28px}
+
+    /* ---------- Animated Background (SVG + CSS) ---------- */
+    .bg-anim{position: absolute; inset:0; z-index:0; pointer-events:none;}
+    /* subtle blur overlay to create depth */
+    .bg-overlay{position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,15,20,0.6), rgba(8,15,20,0.85)); mix-blend-mode: multiply; z-index:1}
+
+    /* ---------- Header / Hero ---------- */
+    header{position:relative; z-index:2}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:56px; height:56px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 8px 30px rgba(7,60,52,0.18)}
+    .brand h1{margin:0; color:white; font-size:18px}
+    .brand p{margin:0; color:rgba(255,255,255,0.8); font-size:12px}
+
+    nav ul{display:flex; gap:12px; list-style:none; margin:0; padding:0}
+    nav a{color:rgba(255,255,255,0.9); text-decoration:none; font-weight:600}
+    .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.95); padding:8px 12px; border-radius:8px}
+    .btn-primary{background:white; color:var(--accent); padding:10px 14px; border-radius:10px; font-weight:700}
+
+    .hero{display:grid; grid-template-columns:1fr 380px; gap:26px; align-items:start; margin-top:22px;}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); padding:22px; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.5); color: #e6f6f2}
+    .hero h2{margin:0 0 12px; font-size:32px; color:white}
+    .hero p{margin:0 0 18px; color:rgba(255,255,255,0.85)}
+
+    /* CTA row */
+    .cta-row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+
+    /* ---------- Modules Grid ---------- */
+    .modules{margin-top:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; z-index:2}
+    .module{background:linear-gradient(180deg,#ffffff, #fbfbfb); padding:18px; border-radius:12px; box-shadow:0 10px 30px rgba(2,6,23,0.08); transition:transform 0.28s ease, box-shadow 0.28s ease}
+    .module:hover{transform:translateY(-8px); box-shadow:0 24px 50px rgba(2,6,23,0.12)}
+    .module h3{margin:0 0 8px}
+    .module p{margin:0; color:var(--muted); font-size:14px}
+
+    /* module tags */
+    .tags{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+    .tag{background:linear-gradient(90deg,#eefdf8,#f1fffb); padding:6px 8px; border-radius:8px; font-size:12px; color:#056651}
+
+    /* ---------- Feature strip / Showcase ---------- */
+    .showcase{margin-top:22px; display:grid; grid-template-columns:1fr 340px; gap:18px; align-items:start}
+    .show-panel{background:linear-gradient(180deg,#fff,#fcfdff); padding:18px; border-radius:12px; box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+    .mini-card{display:flex; gap:12px; align-items:center}
+    .mini-card .icon{width:56px; height:56px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:white}
+
+    /* ---------- Footer ---------- */
+    footer{margin-top:28px; padding:18px; display:flex; justify-content:space-between; gap:12px; align-items:center; color:rgba(255,255,255,0.78); z-index:2}
+
+    /* ---------- Responsive ---------- */
+    @media (max-width:1100px){ .modules{grid-template-columns:repeat(2,1fr)} .hero{grid-template-columns:1fr} .showcase{grid-template-columns:1fr} }
+    @media (max-width:640px){ .modules{grid-template-columns:1fr} .topbar{flex-direction:column; align-items:flex-start} .brand h1{font-size:16px} .hero h2{font-size:24px} }
+
+    /* ---------- Accessible focus states ---------- */
+    a:focus, button:focus {outline:3px solid rgba(74, 152, 155, 0.18); outline-offset:3px}
+  </style>
+</head>
+<body>
+  <div class="page" role="document">
+
+    <!-- Animated SVG Background -->
+    <div class="bg-anim" aria-hidden="true">
+      <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style="display:block">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0%" stop-color="#0b6b5b" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#0ea58a" stop-opacity="0.35" />
+          </linearGradient>
+        </defs>
+        <!-- moving blobs -->
+        <g>
+          <circle cx="180" cy="120" r="220" fill="url(#g1)">
+            <animate attributeName="cx" dur="18s" values="180;1050;180" repeatCount="indefinite" />
+            <animate attributeName="cy" dur="20s" values="120;600;120" repeatCount="indefinite" />
+            <animate attributeName="r" dur="25s" values="220;320;220" repeatCount="indefinite" />
+            <animate attributeName="opacity" dur="8s" values="0.9;0.4;0.9" repeatCount="indefinite" />
+          </circle>
+
+          <circle cx="950" cy="600" r="260" fill="rgba(255,255,255,0.02)">
+            <animate attributeName="cx" dur="22s" values="950;120;950" repeatCount="indefinite" />
+            <animate attributeName="cy" dur="24s" values="600;80;600" repeatCount="indefinite" />
+            <animate attributeName="r" dur="30s" values="260;180;260" repeatCount="indefinite" />
+            <animate attributeName="opacity" dur="7s" values="0.6;0.12;0.6" repeatCount="indefinite" />
+          </circle>
+        </g>
+      </svg>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <main class="site-wrap">
+      <header>
+        <div class="topbar">
+          <div class="brand">
+            <div class="logo" aria-hidden="true">AS</div>
+            <div>
+              <h1>ASRN</h1>
+              <p>Safety • AutoCAD • Training • Web Depevloper </p>
+            </div>
+          </div>
+
+          <nav aria-label="Main navigation">
+            <ul>
+              <li><a href="#modules">Modules</a></li>
+              <li><a href="#showcase">Showcase</a></li>
+              <li><a href="#contact" class="btn-ghost">Contact</a></li>
+              <li><a href="#get" class="btn-primary">Get ASRN</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-card">
+            <h2 id="hero-title">ASRN — Safety Knowledge Hub</h2>
+            <p>Modular resources and training packages: Life Saving Rules (LSR), Electrical Safety, Fall Protection, AutoCAD layouts, and engaging training media ready for demonstration.</p>
+
+            <div class="cta-row">
+              <a class="btn-primary" href="#projects">View Projects</a>
+              <a class="btn-ghost" href="#contact">Request DWG / Slides</a>
+            </div>
+
+            <div style="margin-top:16px; color:rgba(255,255,255,0.85)">
+              <strong>Tip:</strong> Use the Featured section to pin your best LSR or Electrical Safety module when sharing on LinkedIn.
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="Quick stats">
+            <h3 style="margin-top:0; color:white">Quick stats</h3>
+            <ul style="color:rgba(255,255,255,0.9); padding-left:18px">
+              <li>50+ Detailed safety modules</li>
+              <li>100+ training slides & scripts</li>
+              <li>AutoCAD DWG packages (on request)</li>
+            </ul>
+          </aside>
+        </section>
+      </header>
+
+      <section id="modules" class="modules" aria-label="Modules">
+        <article class="module" id="safety-hub">
+          <h3>Safety Hub</h3>
+          <p>Construction Safety, Inndustrial Safety, Workplace Safety, Life Saving Rules, Electrical Safety, Hot Work, Confined Space — full training packs with slides, voice scripts and assessment checklists.</p>
+          <div class="tags"><span class="tag">Construction Safety</span><span class="tag">LSR</span><span class="tag">Electrical</span><span class="tag">PPE</span></div>
+        </article>
+
+        <article class="module" id="autocad-zone">
+          <h3>AutoCAD Zone</h3>
+          <p>2D layouts, 20x20 office plans, scaffolding details, and DWG files for audits and construction planning.</p>
+          <div class="tags"><span class="tag">DWG</span><span class="tag">2D/3D</span><span class="tag">Layouts</span></div>
+        </article>
+
+        <article class="module" id="training-studio">
+          <h3>Training Studio</h3>
+          <p>Short-form videos, thumbnails, and Hindi/English voice scripts tailored for plant-level training and LinkedIn sharing.</p>
+          <div class="tags"><span class="tag">Extrnal & Intrnal Training</span><span class="tag">Videos</span><span class="tag">Scripts</span><span class="tag">Hindi</span></div>
+        </article>
+
+        <article class="module" id="posters">
+          <h3>PPE & Posters</h3>
+          <p>Print-ready posters and social banners for awareness campaigns — Canva & PNG exports included.</p>
+          <div class="tags"><span class="tag">Posters</span><span class="tag">Canva</span><span class="tag">Print</span></div>
+        </article>
+
+        <article class="module" id="audit-tools">
+          <h3>Audit Tools</h3>
+          <p>Routine checklists, inspection trackers and sample CAP notes tailored to plant operations.</p>
+          <div class="tags"><span class="tag">Checklists</span><span class="tag">External&Internal</span><span class="tag">Audit</span></div>
+        </article>
+
+        <article class="module" id="consulting">
+          <h3>Consulting</h3>
+          <p>On-site training, internal communications, and SOP writing for small-to-medium industrial clients.</p>
+          <div class="tags"><span class="tag">External Training</span><span class="tag">SOP</span><span class="tag">On-site Demostration</span></div>
+        </article>
+      </section>
+
+      <section id="showcase" class="showcase" aria-label="Showcase">
+        <div class="show-panel">
+          <h3>Featured Module — Work at Height</h3>
+          <p>Complete 3-minute script, thumbnail, and a downloadable checklist for use in training. Includes video storyboard and voiceover-ready copy.</p>
+          <div style="margin-top:12px">
+            <div class="mini-card">
+              <div class="icon">W</div>
+              <div>
+                <strong>Ready-to-use:</strong>
+                <div style="color:var(--muted)">Slides (PPT), voice scripts (Hindi/English), and a 30s social cut for LinkedIn.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="show-panel">
+          <h4 style="margin-top:0">Request files</h4>
+          <p style="color:var(--muted)">Provide your email and module names. I'll share DWG/Slides/ZIP packages (demo only; assets cleared for sharing).</p>
+
+          <div style="margin-top:12px">
+            <a id="get" class="btn-primary" href="mailto:your@asrn.example">Request Demo Assets</a>
+          </div>
+        </aside>
+      </section>
+
+      <section id="projects" style="margin-top:22px">
+        <h3 style="color:white">Selected Projects</h3>
+        <div style="display:flex; gap:14px; margin-top:12px; flex-wrap:wrap">
+          <div class="module" style="flex:1; min-width:220px">
+            <h4>20x20 Office DWG</h4>
+            <p style="color:var(--muted)">2D floor plan with stairs, terrace and ventilation details.</p>
+          </div>
+          <div class="module" style="flex:1; min-width:220px">
+            <h4>LSR Video Series</h4>
+            <p style="color:var(--muted)">14 LSR modules with scripts, thumbnails, and short social edits.</p>
+          </div>
+          <div class="module" style="flex:1; min-width:220px">
+            <h4>Electrical Safety Course</h4>
+            <p style="color:var(--muted)">Slides & detailed notes aligned with NFPA style guidance (demo educational content).</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:24px">
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+          <div style="flex:1; min-width:220px">
+            <h4 style="color:white; margin:0">Contact me / Request</h4>
+            <p style="color:var(--muted)">Email: <a href="shikhoaaa@gmail.com">shikhoaaa@gmail.com</a>
+          </div>
+
+          <div style="min-width:220px">
+            <div style="background:#fff; padding:12px; border-radius:10px; box-shadow:0 10px 30px rgba(2,6,23,0.06)">
+              <strong>Notice</strong>
+              <p style="margin:6px 0 0; color:var(--muted)">ASRN  — A official ASRN corporate site. For public sharing, keep this notice visible.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div>ASRN — By Mr.Azaz</div>
+        <div>© ASRN — official ASRN website</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Small JS helpers: keyboard shortcut to focus contact mail
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        const mail = document.querySelector('a[href^="mailto:"]');
+        if (mail) mail.focus();
+      }
+    });
+  </script>
+</body>
+</html>
